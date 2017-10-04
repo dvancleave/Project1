@@ -11,7 +11,7 @@ public class jframe {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JLabel emptyLabel = new JLabel("");
-		emptyLabel.setPreferredSize(new Dimension(500, 200));
+		emptyLabel.setPreferredSize(new Dimension(500, 300));
 		
 		frame.getContentPane().add(emptyLabel, BorderLayout.CENTER);
 		
