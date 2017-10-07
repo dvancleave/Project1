@@ -20,7 +20,18 @@ public class AddressBook {
 		Contact selectedContact = contacts.get(iteratorIndex++);
 		if(iteratorIndex == contacts.size())
 			iteratorIndex = 0;
-		return selectedContact.getLastName() + ", " + selectedContact.getFirstName();
+		if(selectedContact != null)
+			return selectedContact.getLastName() + ", " + selectedContact.getFirstName();
+		return null;
+	}
+	public String getFirstContactName()
+	{
+		Contact selectedContact = contacts.get(iteratorIndex++);
+		if(iteratorIndex == contacts.size())
+			iteratorIndex = 0;
+		if(selectedContact != null)
+			return selectedContact.getLastName() + ", " + selectedContact.getFirstName();
+		return null;
 	}
 	public Contact getContactByName(String contactName)
 	{
