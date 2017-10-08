@@ -7,6 +7,11 @@ public class AddressBook {
 	private String name = "Address Book";
 	private int iteratorIndex = 0;
 	
+	public AddressBook()
+	{
+		contacts = new ArrayList<Contact>();
+	}
+	
 	public String getName()
 	{
 		return name;

@@ -33,11 +33,14 @@ public class Contact {
 	Contact()
 	{
 		// Add the values to the various fields
+		data = new ArrayList<String>();
+		newFields = new ArrayList<String>();
 		data.add(firstName, "John");
 		data.add(lastName, "Doe");
 		data.add(addressLine, "1234 University St.");
 		data.add(city, "Eugene");
 		data.add(state, "OR");
+		data.add(ZIP, "97401");
 		data.add(phoneNumber, "97401");
 		data.add(email, "foo@bar.com");
 	}
@@ -83,6 +86,15 @@ public class Contact {
 		//email is the last normal (undeletable) entry, so the variable entries start 1 after it
 		data.set(position + email + 1, value);
 		return true;
+	}
+	
+	public String getField(String field)
+	{
+		int position = newFields.lastIndexOf(field);
+		if(position == -1)
+			return null;
+		//email is the last normal (undeletable) entry, so the variable entries start 1 after it
+		return data.get(position + email + 1);
 	}
 	
 	/*
