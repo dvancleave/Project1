@@ -42,5 +42,6 @@ public class AddressBook {
 	{
 		contacts.add(contact);
 		contacts.sort(SkipList.LastNameComparator);
+		iteratorIndex = 0;
 	}
 }
