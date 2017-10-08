@@ -38,4 +38,9 @@ public class AddressBook {
 		String[] names = contactName.split(", ");
 		return null;
 	}
+	public void addContact(Contact contact)
+	{
+		contacts.add(contact);
+		contacts.sort(SkipList.LastNameComparator);
+	}
 }

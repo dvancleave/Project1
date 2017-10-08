@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class SkipList<E> {
 	ArrayList<E> data;
-	/*
+	//*
 	public static Comparator<Contact> FirstNameComparator = new Comparator<Contact>()
 	{
 		@Override
