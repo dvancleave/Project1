@@ -49,4 +49,8 @@ public class AddressBook {
 		contacts.sort(SkipList.LastNameComparator);
 		iteratorIndex = 0;
 	}
+	public ArrayList<Contact> getContacts()
+	{
+		return contacts;
+	}
 }

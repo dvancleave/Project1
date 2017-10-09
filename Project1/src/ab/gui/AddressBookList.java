@@ -2,17 +2,22 @@ package ab.gui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Vector;
 
 import javax.swing.JList;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({ "rawtypes", "serial" })
 public class AddressBookList<E> extends JList<E> {
-	
-	private static final long serialVersionUID = 7820003430416292753L;
 	
 	public AddressBookList() {
         super();
+        
+        // Set up properties specific to this JList
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		setCellRenderer(new AddressBookListRenderer());
+		setVisibleRowCount(4);
         
         // Attach a mouse motion adapter to let us know the mouse is over an item and to show the tip.
         addMouseMotionListener(new MouseMotionAdapter() {
@@ -30,6 +35,10 @@ public class AddressBookList<E> extends JList<E> {
         });
     }
 	public AddressBookList(E[] listData) {
+		this();
+		setListData(listData);
+	}
+	public AddressBookList(Vector<E> listData) {
 		this();
 		setListData(listData);
 	}
