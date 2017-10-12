@@ -1,8 +1,9 @@
 package ab;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class AddressBook {
+public class AddressBook implements Iterator{
 	private ArrayList<Contact> contacts;
 	private String name = "Address Book";
 	private int iteratorIndex = 0;
@@ -20,27 +21,37 @@ public class AddressBook {
 	{
 		name = newName;
 	}
-	public String getNextContactName()
+	public ContactCard getNextContactName()
 	{
-		Contact selectedContact = contacts.get(iteratorIndex++);
 		if(iteratorIndex == contacts.size())
-			iteratorIndex = 0;
+			return null;
+		Contact selectedContact = contacts.get(iteratorIndex);
 		if(selectedContact != null)
-			return selectedContact.getLastName() + ", " + selectedContact.getFirstName();
+			return new ContactCard(selectedContact.getLastName() + ", " + selectedContact.getFirstName(), iteratorIndex);
 		return null;
 	}
-	public String getFirstContactName()
+	public ContactCard getFirstContactName()
 	{
-		Contact selectedContact = contacts.get(iteratorIndex++);
 		if(iteratorIndex == contacts.size())
-			iteratorIndex = 0;
+			return null;
+		Contact selectedContact = contacts.get(iteratorIndex++);
 		if(selectedContact != null)
-			return selectedContact.getLastName() + ", " + selectedContact.getFirstName();
+			return new ContactCard(selectedContact.getLastName() + ", " + selectedContact.getFirstName(), iteratorIndex);
 		return null;
 	}
 	public Contact getContactByName(String contactName)
 	{
 		String[] names = contactName.split(", ");
+		return null;
+	}
+	public Contact getContactByIndex(int index)
+	{
+		if(index < contacts.size())
+		{
+			Contact contact = contacts.get(index);
+			if(contact != null)
+				return contact;
+		}
 		return null;
 	}
 	public void addContact(Contact contact)
@@ -52,5 +63,17 @@ public class AddressBook {
 	public ArrayList<Contact> getContacts()
 	{
 		return contacts;
+	}
+
+	@Override
+	public boolean hasNext() {
+		// TODO Auto-generated method stub
+		return iteratorIndex == contacts.size() && contacts.get(iteratorIndex) != null;
+	}
+
+	@Override
+	public ContactCard next() {
+		// TODO Auto-generated method stub
+		return getNextContactName();
 	}
 }
