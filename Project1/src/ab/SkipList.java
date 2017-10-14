@@ -34,7 +34,7 @@ public class SkipList<E> {
 		@Override
 		public String toString(Contact arg0)
 		{
-			return arg0.getFirstName().toLowerCase().concat(arg0.getLastName().toLowerCase());
+			return arg0.getFirstName().toLowerCase() + " " + arg0.getLastName().toLowerCase();
 		}
 	};
 	public static ToStringLambda<Contact> ContactLastName = new ToStringLambda<Contact>()
@@ -42,7 +42,7 @@ public class SkipList<E> {
 		@Override
 		public String toString(Contact arg0)
 		{
-			return arg0.getLastName().toLowerCase().concat(arg0.getFirstName().toLowerCase());
+			return arg0.getLastName().toLowerCase() + " " + arg0.getFirstName().toLowerCase();
 		}
 	};
 	public static ToStringLambda<AddressBook> AddressBookName = new ToStringLambda<AddressBook>()
@@ -124,7 +124,9 @@ public class SkipList<E> {
 			ArrayList<E> ref = data.get(index1).get(index2);
 			for(E e : ref)
 			{
-				if(lamb.toString(e).compareTo(query) > 0)
+				String eString = lamb.toString(e);
+				eString = eString.substring(0, query.length());
+				if(eString.compareTo(query) > 0)
 					break;
 				ret.add(e);
 			}
