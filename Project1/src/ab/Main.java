@@ -18,7 +18,21 @@ public class Main {
 		for (int i=0; i<10; i++) {
 			AddressBook ab = new AddressBook();
 			ab.setName("Test address book #" + (i+1));
-			for (int j=0; j<i*2; j++) ab.addContact(new Contact());
+			for (int j=0; j<i*2; j++)ab.addContact(new Contact());
+			
+			Contact nc1 = new Contact();
+			nc1.setFirstName("Conan");
+			ab.addContact(nc1);
+			
+			Contact nc2 = new Contact();
+			nc2.setFirstName("Eriela");
+			nc2.setLastName("Cohen");
+			ab.addContact(nc2);
+			
+			Contact nc3 = new Contact();
+			nc3.setFirstName("Charlie");
+			nc3.setLastName("Ferguson");
+			ab.addContact(nc2);
 			addressBooks.add(ab);
 		}
 		

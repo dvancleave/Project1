@@ -1,16 +1,22 @@
 package ab;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
-public class AddressBook implements Iterator{
-	private ArrayList<Contact> contacts;
+public class AddressBook {
 	private String name = "Address Book";
-	private int iteratorIndex = 0;
+	//For first and last name lookup
+	private SkipList<Contact> contactsFirst;
+	private SkipList<Contact> contactsLast;
+	//If we repeat the query, we shouldn't need to redo the computation (which is expensive)
+	private String previousQuery = null;
+	private ArrayList<Contact> prevList;
 	
 	public AddressBook()
 	{
-		contacts = new ArrayList<Contact>();
+		contactsFirst = new SkipList<Contact>(SkipList.ContactFirstName);
+		contactsLast = new SkipList<Contact>(SkipList.ContactLastName);
 	}
 	
 	public String getName()
@@ -21,59 +27,30 @@ public class AddressBook implements Iterator{
 	{
 		name = newName;
 	}
-	public ContactCard getNextContactName()
-	{
-		if(iteratorIndex == contacts.size())
-			return null;
-		Contact selectedContact = contacts.get(iteratorIndex);
-		if(selectedContact != null)
-			return new ContactCard(selectedContact.getLastName() + ", " + selectedContact.getFirstName(), iteratorIndex);
-		return null;
-	}
-	public ContactCard getFirstContactName()
-	{
-		if(iteratorIndex == contacts.size())
-			return null;
-		Contact selectedContact = contacts.get(iteratorIndex++);
-		if(selectedContact != null)
-			return new ContactCard(selectedContact.getLastName() + ", " + selectedContact.getFirstName(), iteratorIndex);
-		return null;
-	}
-	public Contact getContactByName(String contactName)
-	{
-		String[] names = contactName.split(", ");
-		return null;
-	}
-	public Contact getContactByIndex(int index)
-	{
-		if(index < contacts.size())
-		{
-			Contact contact = contacts.get(index);
-			if(contact != null)
-				return contact;
-		}
-		return null;
-	}
 	public void addContact(Contact contact)
 	{
-		contacts.add(contact);
-		contacts.sort(SkipList.LastNameComparator);
-		iteratorIndex = 0;
+		contactsFirst.add(contact);
+		contactsLast.add(contact);
 	}
 	public ArrayList<Contact> getContacts()
 	{
-		return contacts;
+		ArrayList<Contact> c;
+		return getContactsByQuery("");
 	}
-
-	@Override
-	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return iteratorIndex == contacts.size() && contacts.get(iteratorIndex) != null;
-	}
-
-	@Override
-	public ContactCard next() {
-		// TODO Auto-generated method stub
-		return getNextContactName();
+	public ArrayList<Contact> getContactsByQuery(String query)
+	{
+		if(previousQuery != null && query.compareTo(previousQuery) == 0)
+			return prevList;
+		previousQuery = query;
+		if(query.length() == 0)
+			prevList = contactsFirst.getElementsByQuery("");
+		else
+		{
+			prevList = contactsFirst.getElementsByQuery(query);
+			prevList.addAll(contactsLast.getElementsByQuery(query));
+			prevList = new ArrayList<Contact>(new HashSet<Contact>(prevList)); //Lazily filters the duplicates
+			prevList.sort(SkipList.LastNameComparator);
+		}
+		return prevList;
 	}
 }

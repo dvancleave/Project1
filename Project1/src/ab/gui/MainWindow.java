@@ -218,6 +218,7 @@ public class MainWindow extends JFrame {
 				int index = listBooks.getSelectedIndex(); // Index of address book selected in address book list
 				AddressBook ab = Main.addressBooks.get(index); // Address book that was selected
 				ArrayList<Contact> contacts = ab.getContacts(); // List of contacts in this address book
+				//ArrayList<Contact> contacts = ab.getContactsByQuery("C"); // List of contacts in this address book
 				
 				labelContactList.setText("Contacts (" + contacts.size() + ")"); // Update header w/ # of contacts
 				
