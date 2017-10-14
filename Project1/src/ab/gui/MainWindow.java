@@ -77,7 +77,7 @@ public class MainWindow extends JFrame {
 		/*
 		 * Display button for adding address books
 		 */
-		buttonAddBook = new ButtonAdd("Add address book");
+		buttonAddBook = new ButtonAddBook(this);
 		
 		c.insets = new Insets(6, 6, 6, 0);
 		c.fill = GridBagConstraints.NONE;
@@ -133,7 +133,7 @@ public class MainWindow extends JFrame {
 		/*
 		 * Display button for adding address books
 		 */
-		buttonAddContact = new ButtonAdd("Add contact");
+		buttonAddContact = new ButtonAddContact(this);
 		
 		c.insets = new Insets(6, 6, 6, 0);
 		c.fill = GridBagConstraints.NONE;

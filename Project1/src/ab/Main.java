@@ -18,23 +18,23 @@ public class Main {
 		for (int i=0; i<10; i++) {
 			AddressBook ab = new AddressBook();
 			ab.setName("Test address book #" + (i+1));
-			for (int j=0; j<i*2; j++)ab.addContact(new Contact());
+			for (int j=0; j<i*2; j++)ab.addContact(new Contact().placeholders());
 			
-			Contact nc1 = new Contact();
+			Contact nc1 = new Contact().placeholders();
 			nc1.setFirstName("Conan");
 			ab.addContact(nc1);
 			
-			Contact nc2 = new Contact();
+			Contact nc2 = new Contact().placeholders();
 			nc2.setFirstName("Eriela");
 			nc2.setLastName("Cohen");
 			ab.addContact(nc2);
 			
-			Contact nc3 = new Contact();
+			Contact nc3 = new Contact().placeholders();
 			nc3.setFirstName("Charlie");
 			nc3.setLastName("Ferguson");
 			ab.addContact(nc3);
 			
-			Contact deleted = new Contact();
+			Contact deleted = new Contact().placeholders();
 			deleted.setFirstName("Sad");
 			deleted.setLastName("Face");
 			ab.addContact(deleted);
@@ -44,7 +44,7 @@ public class Main {
 			
 			if (i == 0) {
 				for (int j=0; j<1000; j++) {
-					Contact c = new Contact();
+					Contact c = new Contact().placeholders();
 					c.setFirstName("Test");
 					c.setLastName("Dummy #" + (j+1));
 					c.setAddressLine1("911 Emergency St.");

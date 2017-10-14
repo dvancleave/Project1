@@ -47,8 +47,8 @@ public class ButtonEditContact extends JButton {
 				
 				// If "OK" button was pressed, save contact data
 				if (choice == JOptionPane.OK_OPTION) {
-					panelEdit.saveContact();
-					row.refresh();
+					panelEdit.saveContact();  // Update info in Contact object according to dialog fields
+					row.refresh(); // Refresh this row only
 				}
 			}
 		});

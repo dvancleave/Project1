@@ -31,20 +31,35 @@ public class Contact {
 	 * Instantiates the class and adds a default identity to the contact
 	 * and adds the correct fields to the data ArrayList
 	 */
-	Contact()
+	public Contact()
 	{
 		// Add the values to the various fields
 		data = new ArrayList<String>();
 		newFields = new ArrayList<String>();
-		data.add(firstName, "John");
-		data.add(lastName, "Doe");
-		data.add(addressLine1, "1234 University St.");
+		data.add(firstName, "");
+		data.add(lastName, "");
+		data.add(addressLine1, "");
 		data.add(addressLine2, "");
-		data.add(city, "Eugene");
-		data.add(state, "OR");
-		data.add(ZIP, "97401");
-		data.add(phoneNumber, "(541) 844-9191");
-		data.add(email, "foo@bar.com");
+		data.add(city, "");
+		data.add(state, "");
+		data.add(ZIP, "");
+		data.add(phoneNumber, "");
+		data.add(email, "");
+	}
+	/*
+	 * Temp method; just adds arbitrary placeholder values
+	 */	
+	public Contact placeholders() {
+		data.set(firstName, "John");
+		data.set(lastName, "Doe");
+		data.set(addressLine1, "1234 University St.");
+		data.set(addressLine2, "");
+		data.set(city, "Eugene");
+		data.set(state, "OR");
+		data.set(ZIP, "97401");
+		data.set(phoneNumber, "(541) 844-9191");
+		data.set(email, "foo@bar.com");
+		return this;
 	}
 	
 	/*

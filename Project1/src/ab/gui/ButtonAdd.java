@@ -7,19 +7,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
-public class ButtonAdd extends JButton {
+public abstract class ButtonAdd extends JButton {
 	
 	/*
 	 * Customized green "+" button
 	 */
+
+	private static final ImageIcon icon = new ImageIcon(ButtonEditContact.class.getResource("img/+.png"));
+	private static final ImageIcon iconPressed = new ImageIcon(ButtonEditContact.class.getResource("img/+_pressed.png"));
+	private static final ImageIcon iconRollover = new ImageIcon(ButtonEditContact.class.getResource("img/+_rollover.png"));
 	
-	public ButtonAdd(String tooltip) {
+	public ButtonAdd() {
 		super();
 
-		setToolTipText(tooltip);
-		setIcon(new ImageIcon(getClass().getResource("img/+.png")));
-		setRolloverIcon(new ImageIcon(getClass().getResource("img/+_rollover.png")));
-		setPressedIcon(new ImageIcon(getClass().getResource("img/+_pressed.png")));
+		setIcon(icon);
+		setPressedIcon(iconPressed);
+		setRolloverIcon(iconRollover);
 		setMargin(new Insets(4, 4, 4, 4));
 		setContentAreaFilled(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
