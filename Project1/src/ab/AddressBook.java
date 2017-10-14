@@ -9,9 +9,6 @@ public class AddressBook {
 	//For first and last name lookup
 	private SkipList<Contact> contactsFirst;
 	private SkipList<Contact> contactsLast;
-	//If we repeat the query, we shouldn't need to redo the computation (which is expensive)
-	private String previousQuery = null;
-	private ArrayList<Contact> prevList;
 	
 	public AddressBook()
 	{
@@ -44,18 +41,16 @@ public class AddressBook {
 	}
 	public ArrayList<Contact> getContactsByQuery(String query)
 	{
-		if(previousQuery != null && query.compareTo(previousQuery) == 0)
-			return prevList;
-		previousQuery = query;
+		ArrayList<Contact> ret;
 		if(query.length() == 0)
-			prevList = contactsFirst.getElementsByQuery("");
+			ret = contactsFirst.getElementsByQuery("");
 		else
 		{
-			prevList = contactsFirst.getElementsByQuery(query);
-			prevList.addAll(contactsLast.getElementsByQuery(query));
-			prevList = new ArrayList<Contact>(new HashSet<Contact>(prevList)); //Lazily filters the duplicates
-			prevList.sort(SkipList.LastNameComparator);
+			ret = contactsFirst.getElementsByQuery(query);
+			ret.addAll(contactsLast.getElementsByQuery(query));
+			ret = new ArrayList<Contact>(new HashSet<Contact>(ret)); //Lazily filters the duplicates
+			ret.sort(SkipList.LastNameComparator);
 		}
-		return prevList;
+		return ret;
 	}
 }
