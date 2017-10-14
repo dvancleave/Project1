@@ -16,12 +16,13 @@ public class Contact {
 	
 	private int firstName = 0;
 	private int lastName = 1;
-	private int addressLine = 2;
-	private int city = 3;
-	private int state = 4;
-	private int ZIP = 5;
-	private int phoneNumber = 6;
-	private int email = 7;
+	private int addressLine1 = 2;
+	private int addressLine2 = 3;
+	private int city = 4;
+	private int state = 5;
+	private int ZIP = 6;
+	private int phoneNumber = 7;
+	private int email = 8;
 	
 	private ArrayList<String> data; //Stores field values
 	private ArrayList<String> newFields; //Stores field names
@@ -37,7 +38,8 @@ public class Contact {
 		newFields = new ArrayList<String>();
 		data.add(firstName, "John");
 		data.add(lastName, "Doe");
-		data.add(addressLine, "1234 University St.");
+		data.add(addressLine1, "1234 University St.");
+		data.add(addressLine2, "");
 		data.add(city, "Eugene");
 		data.add(state, "OR");
 		data.add(ZIP, "97401");
@@ -118,11 +120,17 @@ public class Contact {
 	/*
 	 * Getter for addressLine. Returns the value pointed at by addressLine; 
 	 */	
-	public String getAddressLine() {
-		return data.get(addressLine);
+	public String getAddressLine1() {
+		return data.get(addressLine1);
 	}
-	public void setAddressLine(String naddressLine) {
-		data.set(addressLine, naddressLine);
+	public void setAddressLine1(String naddressLine) {
+		data.set(addressLine1, naddressLine);
+	}
+	public String getAddressLine2() {
+		return data.get(addressLine2);
+	}
+	public void setAddressLine2(String naddressLine) {
+		data.set(addressLine2, naddressLine);
 	}
 	/*
 	 * Getter for city. Returns the value pointed at by city; 
