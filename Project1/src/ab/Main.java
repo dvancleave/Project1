@@ -32,7 +32,14 @@ public class Main {
 			Contact nc3 = new Contact();
 			nc3.setFirstName("Charlie");
 			nc3.setLastName("Ferguson");
-			ab.addContact(nc2);
+			ab.addContact(nc3);
+			
+			Contact deleted = new Contact();
+			deleted.setFirstName("Sad");
+			deleted.setLastName("Face");
+			ab.addContact(deleted);
+			
+			ab.removeContact(deleted);
 			addressBooks.add(ab);
 		}
 		

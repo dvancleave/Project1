@@ -32,6 +32,11 @@ public class AddressBook {
 		contactsFirst.add(contact);
 		contactsLast.add(contact);
 	}
+	public void removeContact(Contact contact)
+	{
+		contactsFirst.remove(contact);
+		contactsLast.remove(contact);
+	}
 	public ArrayList<Contact> getContacts()
 	{
 		ArrayList<Contact> c;
