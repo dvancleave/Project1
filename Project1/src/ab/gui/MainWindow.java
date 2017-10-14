@@ -16,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -32,19 +31,23 @@ public class MainWindow extends JFrame {
 	private Font fontHeader = new Font("verdana", Font.BOLD, 20);
 	
 	// Panels within the main window
-	private JPanel panelBookList;
-	private PanelContacts panelContactList;
+	protected JPanel panelBookList;
+	protected PanelContacts panelContactList;
 	
 	// Components for book list section
-	private JButton buttonAddBook;
-	private JLabel labelBookList;
-	private JList<String> listBooks;
-	private JScrollPane scrollPaneBooks;
+	protected JButton buttonAddBook;
+	protected JLabel labelBookList;
+	protected JList<String> listBooks;
+	protected JScrollPane scrollPaneBooks;
 	
 	// Components for contact list section
-	private JButton buttonAddContact;
-	private JLabel labelContactList;
-	private JScrollPane scrollPaneContacts;
+	protected JButton buttonAddContact;
+	protected JLabel labelContactList;
+	protected JScrollPane scrollPaneContacts;
+	protected JPanel panelSearch;
+	
+	// Address book currently being viewed (null = none)
+	private AddressBook currentAB = null;
 	
 	public MainWindow() {
 		setTitle("My Address Books");
@@ -66,7 +69,7 @@ public class MainWindow extends JFrame {
 		c.gridx = 0;
 		c.gridy = 1;
 		c.gridwidth = 2;
-		c.gridheight = 1;
+		c.gridheight = 2;
 		
 		getContentPane().add(panelBookList, c);
 		
@@ -182,7 +185,7 @@ public class MainWindow extends JFrame {
 		/*
 		 * Display the contacts panel
 		 */
-		panelContactList = new PanelContacts();
+		panelContactList = new PanelContacts(this);
 		
 		c.insets = new Insets(0, 0, 0, 0);
 		c.fill = GridBagConstraints.BOTH;
@@ -198,6 +201,22 @@ public class MainWindow extends JFrame {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPaneContacts.setPreferredSize(new Dimension(300, 0));
 		getContentPane().add(scrollPaneContacts, c);
+		
+		
+		/*
+		 * Display the search contacts panel
+		 */
+		panelSearch = new PanelSearch(this);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.weighty = 0;
+		c.gridx = 3;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.gridheight = 1;
+		
+		getContentPane().add(panelSearch, c);
 		
 		
 		/*
@@ -217,15 +236,21 @@ public class MainWindow extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				int index = listBooks.getSelectedIndex(); // Index of address book selected in address book list
-				AddressBook ab = Main.addressBooks.get(index); // Address book that was selected
-				ArrayList<Contact> contacts = ab.getContacts(); // List of contacts in this address book
-				//ArrayList<Contact> contacts = ab.getContactsByQuery("C"); // List of contacts in this address book
-				
-				labelContactList.setText("Contacts (" + contacts.size() + ")"); // Update header w/ # of contacts
-				
-				panelContactList.setContacts(contacts); // Add contacts to scrollable panel
+				currentAB = Main.addressBooks.get(index); // Address book that was selected
+				panelContactList.setContacts(currentAB.getContacts()); // Add contacts to scrollable panel
+				refreshContactsLabel(); // Update "Contacts" label
 			}
 		});
+	}
+	
+	public AddressBook getCurrentAB() {
+		return currentAB;
+	}
+	
+	// Updates "Contacts:" label w/ correct # of contacts
+	public void refreshContactsLabel() {
+		ArrayList<Contact> contacts = currentAB.getContacts();
+		labelContactList.setText("Contacts (" + contacts.size() + ")");
 	}
 	
 }

@@ -41,6 +41,17 @@ public class Main {
 			
 			ab.removeContact(deleted);
 			addressBooks.add(ab);
+			
+			if (i == 0) {
+				for (int j=0; j<1000; j++) {
+					Contact c = new Contact();
+					c.setFirstName("Test");
+					c.setLastName("Dummy #" + (j+1));
+					c.setAddressLine1("911 Emergency St.");
+					c.setAddressLine2("Apt. #911");
+					ab.addContact(c);
+				}
+			}
 		}
 		
 		// Change look & feel to that of the native OS

@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -16,13 +17,18 @@ import ab.Contact;
 @SuppressWarnings("serial")
 public class PanelContacts extends JPanel {
 	
+	private MainWindow window;
+	
 	private static final Color COLOR_ROW_0 = Color.WHITE; // Color for even rows
 	private static final Color COLOR_ROW_1 = new Color(210, 210, 220); // Color for odd rows
 	private Font font = new Font("Verdana", Font.PLAIN, 16); // Font for contact name
 	private int rows = 0; // Number of contacts being shown
 	
-	public PanelContacts() {
+	private List<PanelContactRow> rowPanels = new ArrayList<PanelContactRow>(); // List of JPanel rows
+	
+	public PanelContacts(MainWindow window) {
 		super(new GridBagLayout());
+		this.window = window;
 	}
 	
 	public int getRows() {
@@ -32,7 +38,7 @@ public class PanelContacts extends JPanel {
 	// JPanel for each row of the contact list
 	public class PanelContactRow extends JPanel {
 		
-		private Contact contact;
+		protected Contact contact;
 		private JLabel label;
 		
 		public PanelContactRow(Contact contact) {
@@ -58,6 +64,7 @@ public class PanelContacts extends JPanel {
 	
 	public void setContacts(List<Contact> contacts) {
 		// Reset everything
+		rowPanels.clear();
 		removeAll();
 		rows = 0;
 		
@@ -78,11 +85,13 @@ public class PanelContacts extends JPanel {
 		repaint();
 	}
 	
+	// Add a contact to this panel
 	public void addContact(Contact contact) {
 		/*
 		 * Create panel for this row of the contact list
 		 */
 		PanelContactRow panelRow = new PanelContactRow(contact);
+		rowPanels.add(panelRow);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -95,7 +104,7 @@ public class PanelContacts extends JPanel {
 		/*
 		 * Create & display edit & delete buttons
 		 */
-		JButton buttonDelete = new ButtonDeleteContact(contact);
+		JButton buttonDelete = new ButtonDeleteContact(window, panelRow, contact);
 		panelRow.add(buttonDelete);
 		
 		JButton buttonEdit = new ButtonEditContact(panelRow, contact);
@@ -110,6 +119,53 @@ public class PanelContacts extends JPanel {
 		
 		panelRow.add(label);
 		panelRow.setLabel(label);
+	}
+	
+	// Removes a contact from this panel
+	public void removeContact(Contact contact) {
+		// Remove row panel
+		for (PanelContactRow p : rowPanels) {
+			if (p.contact == contact) {
+				System.out.println(contact.getFirstName() + " ");
+				rowPanels.remove(p);
+				remove(p);
+				break;
+			}
+		}
+		
+		// Refresh row colors & main panel
+		refreshRows();
+		revalidate();
+		repaint();
+	}
+	
+	// Refreshes the background colors on each row to make them alternate
+	public void refreshRows() {
+		int i = 0;
+		for (JPanel p : rowPanels) {
+			if (p.isVisible()) {
+				p.setBackground((i % 2 == 0) ? COLOR_ROW_0 : COLOR_ROW_1);
+				i++;
+			}
+		}
+	}
+	
+	// Sets all JPanel rows to visible - used to return from a search query
+	public void showAllRows() {
+		for (JPanel p : rowPanels) p.setVisible(true);
+		refreshRows();
+	}
+	
+	// Hides all rows not in given list of contact
+	public void filter(List<Contact> results) {
+		for (PanelContactRow p : rowPanels) {
+			if (results.contains(p.contact)) {
+				p.setVisible(true);
+			} else {
+				p.setVisible(false);
+			}
+		}
+		refreshRows();
 	}
 	
 }
