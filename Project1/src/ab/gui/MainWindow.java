@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -110,9 +111,9 @@ public class MainWindow extends JFrame {
 		 * Display separator between book list & contact list
 		 */
 		JPanel separator = new JPanel();
-		separator.setBackground(Color.BLACK);
-		separator.setPreferredSize(new Dimension(2, 300));
-		separator.setMaximumSize(new Dimension(2, 300));
+		separator.setBackground(Color.GRAY);
+		separator.setPreferredSize(new Dimension(1, 300));
+		separator.setMaximumSize(new Dimension(1, 300));
 		
 		c.insets = new Insets(0, 0, 0, 0);
 		c.fill = GridBagConstraints.VERTICAL;

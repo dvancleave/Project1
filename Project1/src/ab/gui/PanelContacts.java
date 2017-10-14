@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -26,6 +27,33 @@ public class PanelContacts extends JPanel {
 	
 	public int getRows() {
 		return rows;
+	}
+	
+	// JPanel for each row of the contact list
+	public class PanelContactRow extends JPanel {
+		
+		private Contact contact;
+		private JLabel label;
+		
+		public PanelContactRow(Contact contact) {
+			this.contact = contact;
+			
+			setLayout(new FlowLayout(FlowLayout.LEFT, 0, 2));
+			setBackground((rows % 2 == 0) ? COLOR_ROW_0 : COLOR_ROW_1); // Alternate the BG color for each row
+		}
+		public void setLabel(JLabel label) {
+			this.label = label;
+			setLabelText();
+		}
+		public void refresh() {
+			setLabelText();
+			revalidate();
+			repaint();
+		}
+		private void setLabelText() {
+			label.setText(" " + contact.getFirstName() + " " + contact.getLastName());
+		}
+		
 	}
 	
 	public void setContacts(List<Contact> contacts) {
@@ -52,32 +80,36 @@ public class PanelContacts extends JPanel {
 	
 	public void addContact(Contact contact) {
 		/*
-		 * Create panel for this row w/ alternating BG color
+		 * Create panel for this row of the contact list
 		 */
-		JPanel panelRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
-		panelRow.setBackground((rows % 2 == 0) ? COLOR_ROW_0 : COLOR_ROW_1);
-		
-		
-		/*
-		 * Display delete & edit buttons
-		 */
-		panelRow.add(new ButtonDelete("Delete contact"));
-		panelRow.add(new ButtonEdit("Edit contact"));
-		
-		
-		/*
-		 * Display contact name
-		 */
-		JLabel label = new JLabel(" " + contact.getFirstName() + " " + contact.getLastName() + " #" + (rows+1));
-		label.setFont(font);
+		PanelContactRow panelRow = new PanelContactRow(contact);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		
-		panelRow.add(label);
 		add(panelRow, c, rows++);
+		
+		
+		/*
+		 * Create & display edit & delete buttons
+		 */
+		JButton buttonDelete = new ButtonDeleteContact(contact);
+		panelRow.add(buttonDelete);
+		
+		JButton buttonEdit = new ButtonEditContact(panelRow, contact);
+		panelRow.add(buttonEdit);
+		
+		
+		/*
+		 * Display contact name
+		 */
+		JLabel label = new JLabel();
+		label.setFont(font);
+		
+		panelRow.add(label);
+		panelRow.setLabel(label);
 	}
 	
 }

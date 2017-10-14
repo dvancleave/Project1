@@ -43,7 +43,7 @@ public class Contact {
 		data.add(city, "Eugene");
 		data.add(state, "OR");
 		data.add(ZIP, "97401");
-		data.add(phoneNumber, "97401");
+		data.add(phoneNumber, "(541) 844-9191");
 		data.add(email, "foo@bar.com");
 	}
 	
