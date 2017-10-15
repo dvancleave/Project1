@@ -11,14 +11,18 @@ public class SkipList<E> {
 	{
 		@Override
 		public int compare(Contact arg0, Contact arg1) {
-			return arg0.getFirstName().toLowerCase().compareTo(arg1.getFirstName().toLowerCase());
+			String s1 = arg0.getFirstName().toLowerCase();
+			String s2 = arg1.getFirstName().toLowerCase();
+			return s1.compareTo(s2);
 		}
 	};
 	public static Comparator<Contact> LastNameComparator = new Comparator<Contact>()
 	{
 		@Override
 		public int compare(Contact arg0, Contact arg1) {
-			return arg0.getLastName().toLowerCase().compareTo(arg1.getLastName().toLowerCase());
+			String s1 = arg0.getFirstName().toLowerCase();
+			String s2 = arg1.getFirstName().toLowerCase();
+			return s1.compareTo(s2);
 		}
 	};
 	public static Comparator<AddressBook> AddressBookNameComparator = new Comparator<AddressBook>()
@@ -61,17 +65,10 @@ public class SkipList<E> {
 		{
 			String s0 = lamb.toString(arg0);
 			String s1 = lamb.toString(arg1);
+			
 			return s0.compareTo(s1);
 		}
 	};
-	
-	public void addContact(E newContact)
-	{
-		String str = lamb.toString(newContact).toLowerCase();
-		char c1 = str.charAt(0);
-		char c2 = str.charAt(1);
-		data.get(c1 - 'a').get(c2 - 'a').add(newContact);
-	}
 	
 	@SuppressWarnings("unused")
 	public SkipList(ToStringLambda<E> lambda)
@@ -96,6 +93,20 @@ public class SkipList<E> {
 	{
 		lamb = lambda;
 	}
+	
+	/*
+	 * Returns true if e matches all of s, even if e's string has a greater length than s
+	 */
+	private int matchES(E e, String s)
+	{
+		String eS = lamb.toString(e);
+		if(eS.length() == s.length())
+			return eS.compareTo(s);
+		if(eS.length() < s.length())
+			return -1;
+		return eS.substring(0, s.length()).compareTo(s);
+	}
+	
 	public ArrayList<E> getElementsByQuery(String query)
 	{
 		query = query.toLowerCase();
@@ -124,19 +135,39 @@ public class SkipList<E> {
 			ArrayList<E> ref = data.get(index1).get(index2);
 			for(E e : ref)
 			{
-				String eString = lamb.toString(e);
-				eString = eString.substring(0, query.length());
-				if(eString.compareTo(query) > 0)
+				int result = matchES(e, query);
+				if(result < 0) // Toss this out, but the next one can still match
+					continue;
+				else if(result > 0) // None of the rest can match since they're after the query
 					break;
 				ret.add(e);
 			}
+			/*
+			index1 = query.charAt(0) - 'a';
+			index2 = query.charAt(1) - 'a';
+			ArrayList<E> ref = data.get(index1).get(index2);
+			for(E e : ref)
+			{
+				String eString = lamb.toString(e);
+				eString = eString.substring(0, query.length());
+				if(eString.compareTo(query) != 0)
+					break;
+				ret.add(e);
+			}
+			//*/
 		}
 		ret.sort(comp);
 		return ret;
 	}
 	public void add(E e)
 	{
+		// We want the first sequence of strings before any whitespace for use in finding the index.
+		// The rest of the string is normally used for comparison, but it will be tossed;
 		String eString = lamb.toString(e);
+		if(eString.charAt(0) == ' ') //First radix (first name, last name etc) is empty
+			eString = "";
+		else
+			eString = eString.split(" ")[0];
 		int index1 = 0, index2 = 0, index3 = 0;
 		if(eString.length() >= 1)
 		{
@@ -152,8 +183,14 @@ public class SkipList<E> {
 	}
 	public void remove(E e)
 	{
+		// We want the first sequence of strings before any whitespace for use in finding the index.
+		// The rest of the string is normally used for comparison, but it will be tossed;
 		String eString = lamb.toString(e);
-		int index1 = 0, index2 = 0, index3 = 0;
+		if(eString.charAt(0) == ' ') //First radix (first name, last name etc) is empty
+			eString = "";
+		else
+			eString = eString.split(" ")[0];
+		int index1 = 0, index2 = 0;
 		if(eString.length() >= 1)
 		{
 			index1 = eString.charAt(0) - 'a';

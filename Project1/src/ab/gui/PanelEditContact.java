@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ab.Contact;
+import ab.AddressBook;
 
 @SuppressWarnings("serial")
 public class PanelEditContact extends JPanel {
@@ -78,6 +79,9 @@ public class PanelEditContact extends JPanel {
 	
 	// Saves the updated contact info into Contact object
 	public void saveContact() {
+		AddressBook container = contact.getContainer();
+		if(container != null)
+			container.removeContact(contact);
 		contact.setFirstName(fieldFirstName.getText());
 		contact.setLastName(fieldLastName.getText());
 		contact.setAddressLine1(fieldAddress1.getText());
@@ -87,6 +91,8 @@ public class PanelEditContact extends JPanel {
 		contact.setZIP(fieldZIP.getText());
 		contact.setPhoneNumber(fieldPhone.getText());
 		contact.setEmail(fieldEmail.getText());
+		if(container != null)
+			container.addContact(contact);
 	}
 	
 }

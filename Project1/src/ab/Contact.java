@@ -23,6 +23,7 @@ public class Contact {
 	private int ZIP = 6;
 	private int phoneNumber = 7;
 	private int email = 8;
+	private AddressBook containerRef;
 	
 	private ArrayList<String> data; //Stores field values
 	private ArrayList<String> newFields; //Stores field names
@@ -60,6 +61,16 @@ public class Contact {
 		data.set(phoneNumber, "(541) 844-9191");
 		data.set(email, "foo@bar.com");
 		return this;
+	}
+	
+	public void setContainer(AddressBook cont)
+	{
+		containerRef = cont;
+	}
+	
+	public AddressBook getContainer()
+	{
+		return containerRef;
 	}
 	
 	/*

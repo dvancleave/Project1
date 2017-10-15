@@ -26,6 +26,7 @@ public class AddressBook {
 	}
 	public void addContact(Contact contact)
 	{
+		contact.setContainer(this);
 		contactsFirst.add(contact);
 		contactsLast.add(contact);
 	}
