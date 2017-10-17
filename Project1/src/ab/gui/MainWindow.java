@@ -7,14 +7,18 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
@@ -203,6 +207,9 @@ public class MainWindow extends JFrame {
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPaneContacts.setPreferredSize(new Dimension(300, 0));
+		
+		disableContactPane();
+		
 		getContentPane().add(scrollPaneContacts, c);
 		
 		
@@ -233,17 +240,46 @@ public class MainWindow extends JFrame {
 		
 		
 		/*
-		 * Listener for address book selection
+		 * Address book list listeners
 		 */
 		listBooks.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				int index = listBooks.getSelectedIndex(); // Index of address book selected in address book list
-				currentAB = Main.addressBooks.get(index); // Address book that was selected
-				panelContactList.setContacts(currentAB.getContacts()); // Add contacts to scrollable panel
-				refreshContactsLabel(); // Update "Contacts" label
+				
+				// If a book is actually selected, show it
+				if (index >= 0) {
+					currentAB = Main.addressBooks.get(index); // Address book that was selected
+					panelContactList.setContacts(currentAB.getContacts()); // Add contacts to scrollable panel
+					enableContactPane(); // Enable/update "Contacts" label and other components
+				}
 			}
 		});
+		listBooks.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+            	// Ask to remove book when delete key pressed
+                if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                	int index = listBooks.getSelectedIndex(); // Index of address book selected in address book list
+    				
+    				if (index >= 0) {
+    					String msg = "Are you sure you want to delete this address book?";
+        				int choice = JOptionPane.showConfirmDialog(getRootPane().getParent(),
+        						msg, "Delete Contact", JOptionPane.OK_CANCEL_OPTION);
+        				
+        				// If "OK" button was pressed, delete contact
+        				if (choice == JOptionPane.OK_OPTION) {
+        					addressBookNames.remove(index);
+                            listBooks.revalidate();
+        					disableContactPane();
+        					Main.addressBooks.remove(index);
+        				}
+    				}
+                }
+            }
+            public void keyReleased(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {}
+        });
 	}
 	
 	public AddressBook getCurrentAB() {
@@ -254,6 +290,21 @@ public class MainWindow extends JFrame {
 	public void refreshContactsLabel() {
 		ArrayList<Contact> contacts = currentAB.getContacts();
 		labelContactList.setText("Contacts (" + contacts.size() + ")");
+	}
+	
+	// Enables elements on the "Contacts" half of the app
+	public void enableContactPane() {
+		refreshContactsLabel();
+		labelContactList.setEnabled(true);
+		buttonAddContact.setEnabled(true);
+	}
+	
+	// Disables elements on the "Contacts" half of the app
+	public void disableContactPane() {
+		labelContactList.setText("Contacts");
+		labelContactList.setEnabled(false);
+		buttonAddContact.setEnabled(false);
+		panelContactList.setContacts(new ArrayList<Contact>());
 	}
 	
 }

@@ -2,18 +2,22 @@ package ab;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class AddressBook {
-	private String name = "Address Book";
+	private String name;
 	//For first and last name lookup
 	private SkipList<Contact> contactsFirst;
 	private SkipList<Contact> contactsLast;
 	
-	public AddressBook()
+	public AddressBook(String name)
 	{
+		this.name = name;
 		contactsFirst = new SkipList<Contact>(SkipList.ContactFirstName);
 		contactsLast = new SkipList<Contact>(SkipList.ContactLastName);
+	}
+	public AddressBook()
+	{
+		this("Address Book");
 	}
 	
 	public String getName()
