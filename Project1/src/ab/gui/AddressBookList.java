@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
@@ -41,6 +42,11 @@ public class AddressBookList<E> extends JList<E> {
 	public AddressBookList(Vector<E> listData) {
 		this();
 		setListData(listData);
+	}
+	public AddressBookList(DefaultListModel<E> model)
+	{
+		this();
+		setModel(model);
 	}
 
 	// Expose the getToolTipText event of our JList

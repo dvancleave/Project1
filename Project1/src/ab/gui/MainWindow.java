@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ public class MainWindow extends JFrame {
 	protected JLabel labelBookList;
 	protected JList<String> listBooks;
 	protected JScrollPane scrollPaneBooks;
+	protected DefaultListModel<String> addressBookNames;
 	
 	// Components for contact list section
 	protected JButton buttonAddContact;
@@ -168,9 +170,10 @@ public class MainWindow extends JFrame {
 		/*
 		 * Display the components inside book panel
 		 */
-		Vector<String> addressBookNames = new Vector<String>();
+		//Vector<String> addressBookNames = new Vector<String>();
+		addressBookNames = new DefaultListModel<String>();
 		for (AddressBook ab : Main.addressBooks) {
-			addressBookNames.add(ab.getName());
+			addressBookNames.addElement(ab.getName());
 		}
 		listBooks = new AddressBookList<String>(addressBookNames);
 		listBooks.setFixedCellWidth(300);
