@@ -249,6 +249,7 @@ public class MainWindow extends JFrame {
 				
 				// If a book is actually selected, show it
 				if (index >= 0) {
+					Main.lastLoadedAddressBook = index;
 					currentAB = Main.addressBooks.get(index); // Address book that was selected
 					panelContactList.setContacts(currentAB.getContacts()); // Add contacts to scrollable panel
 					enableContactPane(); // Enable/update "Contacts" label and other components
@@ -280,6 +281,8 @@ public class MainWindow extends JFrame {
             public void keyReleased(KeyEvent e) {}
             public void keyTyped(KeyEvent e) {}
         });
+		if(Main.lastLoadedAddressBook != -1)
+			listBooks.setSelectedIndex(Main.lastLoadedAddressBook);
 	}
 	
 	public AddressBook getCurrentAB() {

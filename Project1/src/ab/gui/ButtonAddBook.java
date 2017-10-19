@@ -29,6 +29,7 @@ public class ButtonAddBook extends ButtonAdd {
 					// If "OK" button was pressed, delete contact
 					AddressBook ab = new AddressBook(name);
 					Main.addressBooks.add(ab);
+					Main.contactFiles.add(Main.createCF(ab));
 					window.addressBookNames.addElement(ab.getName());
 
 					// Scroll down to newly created book if necessary

@@ -203,4 +203,18 @@ public class Contact {
 	public void setEmail(String nemail) {
 		data.set(email, nemail);
 	}
+	public String formatString()
+	{
+		String ret = "";
+		for(String s : data)
+			ret += s + "\t";
+		ret += "\n";
+		return ret;
+	}
+	public void setData(String[] ndata)
+	{
+		int size = (ndata.length <= data.size()) ? ndata.length : data.size();
+		for(int i = 0; i < size; ++i)
+			data.set(i, ndata[i]);
+	}
 }

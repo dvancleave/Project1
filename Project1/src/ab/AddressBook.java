@@ -1,7 +1,12 @@
 package ab;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Scanner;
 
 public class AddressBook {
 	private String name;
@@ -57,5 +62,54 @@ public class AddressBook {
 			ret.sort(SkipList.LastNameComparator);
 		}
 		return ret;
+	}
+	
+	public void saveContacts(String fileName)
+	{
+		File file = new File(fileName);
+		try
+		{
+			FileWriter writer = new FileWriter(file);
+			ArrayList<Contact> contacts = contactsFirst.getElementsByQuery("");
+			for(Contact c : contacts)
+				writer.write(c.formatString());
+			writer.flush();
+			writer.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadContacts(String fileName)
+	{
+		File file = new File(fileName);
+		try
+		{
+			Scanner scan = new Scanner(file);
+			while(scan.hasNextLine())
+			{
+				String csString = scan.nextLine();
+				String[] tokens = new String[9];
+				int index1 = 0;
+				int index2;
+				int i = 0;
+				while(index1 != csString.length())
+				{
+					index2 = csString.indexOf('\t', index1);
+					tokens[i++] = csString.substring(index1, index2);
+					index1 = index2 + 1;
+				}
+				Contact c = new Contact();
+				c.setData(tokens);
+				addContact(c);
+			}
+			scan.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
