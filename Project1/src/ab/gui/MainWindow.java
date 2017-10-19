@@ -306,6 +306,7 @@ public class MainWindow extends JFrame {
                             listBooks.revalidate();
         					disableContactPane();
         					Main.addressBooks.remove(index);
+        					Main.contactFiles.remove(index); //Remove the contact file to mitigate bloat
         				}
     				}
                 }
@@ -349,7 +350,9 @@ public class MainWindow extends JFrame {
 		});
 		
 		// Auto-load last address book
-		if (Main.lastLoadedAddressBook != -1 && Main.lastLoadedAddressBook < listBooks.getVisibleRowCount()) {
+		//This line --v doesn't load the addressbook if it is greater than 4: data race condition?
+		//if (Main.lastLoadedAddressBook != -1 && Main.lastLoadedAddressBook < listBooks.getVisibleRowCount()) {
+		if (Main.lastLoadedAddressBook != -1 ) {
 			listBooks.setSelectedIndex(Main.lastLoadedAddressBook);
 		} else {
 			disableContactPane();
