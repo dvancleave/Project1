@@ -126,7 +126,6 @@ public class PanelContacts extends JPanel {
 		// Remove row panel
 		for (PanelContactRow p : rowPanels) {
 			if (p.contact == contact) {
-				System.out.println(contact.getFirstName() + " ");
 				rowPanels.remove(p);
 				remove(p);
 				break;

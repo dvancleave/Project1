@@ -354,6 +354,7 @@ public class MainWindow extends JFrame {
 		//if (Main.lastLoadedAddressBook != -1 && Main.lastLoadedAddressBook < listBooks.getVisibleRowCount()) {
 		if (Main.lastLoadedAddressBook != -1 ) {
 			listBooks.setSelectedIndex(Main.lastLoadedAddressBook);
+			listBooks.ensureIndexIsVisible(Main.lastLoadedAddressBook); // Scroll down to last address book
 		} else {
 			disableContactPane();
 		}
