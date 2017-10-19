@@ -33,22 +33,34 @@ public class AddressBook {
 	{
 		name = newName;
 	}
+	/*
+	 * Adds the provided contact
+	 */
 	public void addContact(Contact contact)
 	{
 		contact.setContainer(this);
 		contactsFirst.add(contact);
 		contactsLast.add(contact);
 	}
+	/*
+	 * Removes the selected contact
+	 */
 	public void removeContact(Contact contact)
 	{
 		contactsFirst.remove(contact);
 		contactsLast.remove(contact);
 	}
+	/*
+	 * Returns the whole list of contacts
+	 */
 	public ArrayList<Contact> getContacts()
 	{
 		ArrayList<Contact> c;
 		return getContactsByQuery("");
 	}
+	/*
+	 * Returns the complete list of contacts that match the given query
+	 */
 	public ArrayList<Contact> getContactsByQuery(String query)
 	{
 		ArrayList<Contact> ret;
@@ -64,6 +76,12 @@ public class AddressBook {
 		return ret;
 	}
 	
+	/*
+	 * Saves the contacts from the first name sorted ADT
+	 * to the specified file. This shouldn't be an
+	 * arbitrary file, but its corresponding file from
+	 * contactFiles in Main
+	 */
 	public void saveContacts(String fileName)
 	{
 		File file = new File(fileName);
@@ -82,6 +100,9 @@ public class AddressBook {
 		}
 	}
 	
+	/*
+	 * Returns true if the load worked, false otherwise
+	 */
 	public boolean loadContacts(String fileName)
 	{
 		File file = new File(fileName);
