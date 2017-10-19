@@ -5,8 +5,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.sun.xml.internal.ws.util.StringUtils;
 
 import ab.Contact;
 import ab.AddressBook;
@@ -74,7 +77,7 @@ public class PanelEditContact extends JPanel {
 		fieldState.setText(contact.getState());
 		fieldZIP.setText(contact.getZIP());
 		fieldPhone.setText(contact.getPhoneNumber());
-		fieldEmail.setText(contact.getEmail());
+		fieldEmail.setText(contact.getEmail());	
 	}
 	
 	// Saves the updated contact info into Contact object
@@ -90,9 +93,99 @@ public class PanelEditContact extends JPanel {
 		contact.setState(fieldState.getText());
 		contact.setZIP(fieldZIP.getText());
 		contact.setPhoneNumber(fieldPhone.getText());
-		contact.setEmail(fieldEmail.getText());
-		if(container != null)
+		contact.setEmail(fieldEmail.getText());	
+		if(container != null) {
 			container.addContact(contact);
+		}
+	}
+	
+	
+	public boolean checkValid() {
+		//Checks all fields for correct formatting
+	
+		if(fieldFirstName.getText().matches("^.*[^a-zA-Z0-9 ].*$") | (fieldFirstName.getText().length() == 0
+				& fieldLastName.getText().length() == 0) | fieldFirstName.getText().matches("^-?\\d+$"))
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid First Name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if(fieldLastName.getText().matches("^.*[^a-zA-Z0-9 ].*$") | fieldLastName.getText().matches("^-?\\d+$"))
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Last Name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if(fieldAddress1.getText().length() > 64)
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Address", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if(fieldAddress2.getText().length() > 64)
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Address", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if(fieldCity.getText().length() > 64)
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid City", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if(fieldState.getText().length() > 64)
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid State", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if (fieldZIP.getText().length() != 0 & fieldZIP.getText().length() != 5 &
+				fieldZIP.getText().length() != 10)
+		{
+			if(fieldZIP.getText().length() == 10 && fieldZIP.getText().charAt(5) == '-') {
+				return true;
+			}
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Zip Code", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+			
+		if(fieldPhone.getText().length() != 0 & (fieldPhone.getText().length() 
+				< 7 | fieldPhone.getText().length() > 14))
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Phone Number", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if(fieldEmail.getText().length() > 64)
+		{
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Email Address", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		else 
+		{
+			return true;
+		}
+		
 	}
 	
 }
