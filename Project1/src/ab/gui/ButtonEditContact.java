@@ -46,28 +46,24 @@ public class ButtonEditContact extends JButton {
 						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 				
 				// If "OK" button was pressed, save contact data
-				boolean save_contact = true;
-				
 				if (choice == JOptionPane.OK_OPTION) {
+					boolean saveContact = true;
+					
 					// Checks if the inputs are all valid by calling function checkValid
 					while(!panelEdit.checkValid()) {
 							int choices = JOptionPane.showConfirmDialog(row.getRootPane().getParent(), panelEdit, title,
 									JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 							if(choices == (JOptionPane.CANCEL_OPTION | JOptionPane.CLOSED_OPTION)) {
-								save_contact = false;
+								saveContact = false;
 								break;
 							}				
 					}
-					
-				if(save_contact) {
-					panelEdit.saveContact();  // Update info in Contact object according to dialog fields
-					row.refresh(); // Refresh this row only
+					if (saveContact) {
+						panelEdit.saveContact();  // Update info in Contact object according to dialog fields
+						row.refresh(); // Refresh this row only
 					}
 				}
-						
-									
-				}
-			
+			}
 		});
 	}
 	

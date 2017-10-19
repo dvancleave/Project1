@@ -4,31 +4,22 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import ab.Contact;
-import ab.Main;
 
 @SuppressWarnings("serial")
 public class PanelSearch extends JPanel {
 	
-	private MainWindow window;
-	
 	private JTextField fieldSearch;
 	
 	public PanelSearch(MainWindow window) {
-		this.window = window;
-		
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.ipady = 2;

@@ -82,9 +82,8 @@ public class AddressBook {
 	 * arbitrary file, but its corresponding file from
 	 * contactFiles in Main
 	 */
-	public void saveContacts(String fileName)
+	public void saveContacts(File file)
 	{
-		File file = new File(fileName);
 		try
 		{
 			FileWriter writer = new FileWriter(file);
@@ -99,13 +98,15 @@ public class AddressBook {
 			e.printStackTrace();
 		}
 	}
+	public void saveContacts(String fileName) {
+		saveContacts(new File(fileName));
+	}
 	
 	/*
 	 * Returns true if the load worked, false otherwise
 	 */
-	public boolean loadContacts(String fileName)
+	public boolean loadContacts(File file)
 	{
-		File file = new File(fileName);
 		try
 		{
 			Scanner scan = new Scanner(file);
@@ -128,11 +129,15 @@ public class AddressBook {
 			}
 			scan.close();
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 			return false;
 		}
 		return true;
+	}
+	public boolean loadContacts(String fileName)
+	{
+		return loadContacts(new File(fileName));
 	}
 }

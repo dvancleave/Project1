@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,13 +15,19 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -51,6 +58,12 @@ public class MainWindow extends JFrame {
 	protected JLabel labelContactList;
 	protected JScrollPane scrollPaneContacts;
 	protected JPanel panelSearch;
+	
+	// Components for JMenuBar (toolbar with dropdown menus at the top)
+	protected JMenuBar menu;
+	protected JMenu menuFile;
+	protected JMenuItem menuFileSaveAll;
+	protected JMenuItem menuFileLoad;
 	
 	// Address book currently being viewed (null = none)
 	private AddressBook currentAB = null;
@@ -208,8 +221,6 @@ public class MainWindow extends JFrame {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPaneContacts.setPreferredSize(new Dimension(300, 0));
 		
-		disableContactPane();
-		
 		getContentPane().add(scrollPaneContacts, c);
 		
 		
@@ -227,6 +238,26 @@ public class MainWindow extends JFrame {
 		c.gridheight = 1;
 		
 		getContentPane().add(panelSearch, c);
+		
+		
+		/*
+		 * Display the menu bar
+		 */
+		menu = new JMenuBar();
+		menuFile = new JMenu("File");
+		
+		menuFileSaveAll = new JMenuItem("Save All          ", new ImageIcon(getClass().getResource("img/save.png")));
+		menuFileSaveAll.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask())); // Ctrl-S shortcut
+		menuFileSaveAll.setToolTipText("Save all contacts & address books.");
+		menuFile.add(menuFileSaveAll);
+		
+		menuFileLoad = new JMenuItem("Load...          ", new ImageIcon(getClass().getResource("img/load.png")));
+		menuFileLoad.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask())); // Ctrl-O shortcut
+		menuFileSaveAll.setToolTipText("Load contacts into this address book.");
+		menuFile.add(menuFileLoad);
+		
+		menu.add(menuFile);
+		setJMenuBar(menu);
 		
 		
 		/*
@@ -270,6 +301,7 @@ public class MainWindow extends JFrame {
         				
         				// If "OK" button was pressed, delete contact
         				if (choice == JOptionPane.OK_OPTION) {
+        					Main.lastLoadedAddressBook = -1;
         					addressBookNames.remove(index);
                             listBooks.revalidate();
         					disableContactPane();
@@ -281,8 +313,47 @@ public class MainWindow extends JFrame {
             public void keyReleased(KeyEvent e) {}
             public void keyTyped(KeyEvent e) {}
         });
-		if(Main.lastLoadedAddressBook != -1)
+		
+		
+		/*
+		 * Menu bar listeners
+		 */
+		menuFileSaveAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.saveManifest();
+				Main.saveContacts();
+				JOptionPane.showMessageDialog(getRootPane().getParent(), "Successfully saved contacts & address books.");
+			}
+		});
+		menuFileLoad.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (currentAB == null) {
+					JOptionPane.showMessageDialog(getRootPane().getParent(), "You must select an address book first.", "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					final JFileChooser fileChooser = new JFileChooser();
+					int returnVal = fileChooser.showOpenDialog(MainWindow.this);
+					
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						if (currentAB.loadContacts(fileChooser.getSelectedFile())) {
+							refreshContactsLabel(); // Refresh # of contacts
+							panelContactList.setContacts(currentAB.getContacts()); // Add contacts to scrollable panel
+							JOptionPane.showMessageDialog(getRootPane().getParent(), "Successfully loaded contacts into address book.");
+						} else {
+							JOptionPane.showMessageDialog(getRootPane().getParent(), "File was formatted incorrectly.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				}
+			}
+		});
+		
+		// Auto-load last address book
+		if (Main.lastLoadedAddressBook != -1 && Main.lastLoadedAddressBook < listBooks.getVisibleRowCount()) {
 			listBooks.setSelectedIndex(Main.lastLoadedAddressBook);
+		} else {
+			disableContactPane();
+		}
 	}
 	
 	public AddressBook getCurrentAB() {
@@ -300,6 +371,7 @@ public class MainWindow extends JFrame {
 		refreshContactsLabel();
 		labelContactList.setEnabled(true);
 		buttonAddContact.setEnabled(true);
+		menuFileLoad.setEnabled(true);
 	}
 	
 	// Disables elements on the "Contacts" half of the app
@@ -308,6 +380,7 @@ public class MainWindow extends JFrame {
 		labelContactList.setEnabled(false);
 		buttonAddContact.setEnabled(false);
 		panelContactList.setContacts(new ArrayList<Contact>());
+		menuFileLoad.setEnabled(false);
 	}
 	
 }
