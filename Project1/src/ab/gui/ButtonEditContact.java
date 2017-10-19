@@ -53,7 +53,7 @@ public class ButtonEditContact extends JButton {
 					while(!panelEdit.checkValid()) {
 							int choices = JOptionPane.showConfirmDialog(row.getRootPane().getParent(), panelEdit, title,
 									JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-							if(choices == (JOptionPane.CANCEL_OPTION | JOptionPane.CLOSED_OPTION)) {
+							if(choices == JOptionPane.CANCEL_OPTION | choices == JOptionPane.CLOSED_OPTION) {
 								saveContact = false;
 								break;
 							}				

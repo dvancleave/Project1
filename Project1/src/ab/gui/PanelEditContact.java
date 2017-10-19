@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 
 import ab.Contact;
 import ab.AddressBook;
@@ -102,9 +101,15 @@ public class PanelEditContact extends JPanel {
 	
 	public boolean checkValid() {
 		//Checks all fields for correct formatting
-	
-		if(fieldFirstName.getText().matches("^.*[^a-zA-Z0-9 ].*$") | (fieldFirstName.getText().length() == 0
-				& fieldLastName.getText().length() == 0) | fieldFirstName.getText().matches("^-?\\d+$"))
+		
+		if (fieldFirstName.getText().trim().length() == 0 & fieldLastName.getText().trim().length() == 0) {
+			JOptionPane.showMessageDialog(null, "Contact must have a valid First or Last Name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		
+		if(fieldFirstName.getText().matches("^.*[^a-zA-Z ].*$") | fieldFirstName.getText().length() > 64)
 		{
 			JOptionPane.showMessageDialog(null, "Please Enter a valid First Name", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -112,7 +117,7 @@ public class PanelEditContact extends JPanel {
 		}
 		
 		
-		if(fieldLastName.getText().matches("^.*[^a-zA-Z0-9 ].*$") | fieldLastName.getText().matches("^-?\\d+$"))
+		if(fieldLastName.getText().matches("^.*[^a-zA-Z ].*$") | fieldLastName.getText().length() > 64)
 		{
 			JOptionPane.showMessageDialog(null, "Please Enter a valid Last Name", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -122,7 +127,7 @@ public class PanelEditContact extends JPanel {
 		
 		if(fieldAddress1.getText().length() > 64)
 		{
-			JOptionPane.showMessageDialog(null, "Please Enter a valid Address", "Error",
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Address (Line 1)", "Error",
                     JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -130,13 +135,13 @@ public class PanelEditContact extends JPanel {
 		
 		if(fieldAddress2.getText().length() > 64)
 		{
-			JOptionPane.showMessageDialog(null, "Please Enter a valid Address", "Error",
+			JOptionPane.showMessageDialog(null, "Please Enter a valid Address (Line 2)", "Error",
                     JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		
 		
-		if(fieldCity.getText().length() > 64)
+		if(fieldCity.getText().matches("^.*[^a-zA-Z ].*$") | fieldCity.getText().length() > 64)
 		{
 			JOptionPane.showMessageDialog(null, "Please Enter a valid City", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -144,7 +149,7 @@ public class PanelEditContact extends JPanel {
 		}
 		
 		
-		if(fieldState.getText().length() > 64)
+		if(fieldState.getText().matches("^.*[^a-zA-Z ].*$") | fieldState.getText().length() > 64)
 		{
 			JOptionPane.showMessageDialog(null, "Please Enter a valid State", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -152,24 +157,65 @@ public class PanelEditContact extends JPanel {
 		}
 		
 		
-		if (fieldZIP.getText().length() != 0 & fieldZIP.getText().length() != 5 &
-				fieldZIP.getText().length() != 10)
+		if (fieldZIP.getText().length() != 0)
 		{
-			if(fieldZIP.getText().length() == 10 && fieldZIP.getText().charAt(5) == '-') {
-				return true;
-			}
-			JOptionPane.showMessageDialog(null, "Please Enter a valid Zip Code", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		
+			String new_str = fieldZIP.getText();
+			new_str = new StringBuilder(new_str).toString().replaceAll("[^0-9]","");
+			fieldZIP.setText(new_str);
 			
-		if(fieldPhone.getText().length() != 0 & (fieldPhone.getText().length() 
-				< 7 | fieldPhone.getText().length() > 14))
+			if(new_str.length() != 5 & new_str.length() != 9)
+			{
+				JOptionPane.showMessageDialog(null, "Please Enter a valid Zip Code", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			
+			if(fieldZIP.getText().length() == 9) {
+				String new_strs = fieldZIP.getText();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-4, "-").toString();
+				this.fieldZIP.setText(new_strs);
+			}
+		}	
+		
+		
+		if(fieldPhone.getText().length() != 0)
 		{
-			JOptionPane.showMessageDialog(null, "Please Enter a valid Phone Number", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-			return false;
+			String new_str = fieldPhone.getText();
+			new_str = new StringBuilder(new_str).toString().replaceAll("[^0-9]","");
+			fieldPhone.setText(new_str);
+			
+			if(new_str.length() != 7 & new_str.length() != 10 & new_str.length() != 11)
+			{
+				JOptionPane.showMessageDialog(null, "Please Enter a valid Phone Number", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			if(fieldPhone.getText().length() == 7)
+			{
+				String new_strs = fieldPhone.getText();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-4, "-").toString();
+				fieldPhone.setText(new_strs);
+			}
+			if(fieldPhone.getText().length() == 10)
+			{
+				String new_strs = fieldPhone.getText();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-10, "(").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-7, ")").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-7, " ").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-4, "-").toString();
+				fieldPhone.setText(new_strs);
+			}
+			if(fieldPhone.getText().length() == 11)
+			{
+				String new_strs = fieldPhone.getText();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-11, "+").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-10, " ").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-10, "(").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-7, ")").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-7, " ").toString();
+				new_strs = new StringBuilder(new_strs).insert(new_strs.length()-4, "-").toString();
+				fieldPhone.setText(new_strs);
+			}
 		}
 		
 		
@@ -179,13 +225,9 @@ public class PanelEditContact extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		
-		
-		else 
-		{
-			return true;
-		}
-		
+	
+		return true;
+
 	}
 	
 }

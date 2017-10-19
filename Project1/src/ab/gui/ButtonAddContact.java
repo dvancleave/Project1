@@ -26,13 +26,26 @@ public class ButtonAddContact extends ButtonAdd {
 						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 				
 				// If "OK" button was pressed, save contact data
+				
 				if (choice == JOptionPane.OK_OPTION) {
+					boolean saveContact = true;
 					AddressBook book = window.getCurrentAB();
 					
-					book.addContact(contact); // Add the Contact to the AddressBook
-					panelAdd.saveContact(); // Update info in Contact object according to dialog fields
-					window.panelContactList.setContacts(book.getContacts()); // Refresh contacts list
-					window.refreshContactsLabel(); // Update "Contacts" label
+					// Checks if the inputs are all valid by calling function checkValid
+					while(!panelAdd.checkValid()) {
+							int choices = JOptionPane.showConfirmDialog(window.getRootPane().getParent(), panelAdd, "Add Contact",
+									JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+							if(choices == JOptionPane.CANCEL_OPTION | choices == JOptionPane.CLOSED_OPTION) {
+								saveContact = false;
+								break;
+							}				
+					}
+					if (saveContact) {
+						book.addContact(contact); // Add the Contact to the AddressBook
+						panelAdd.saveContact(); // Update info in Contact object according to dialog fields
+						window.panelContactList.setContacts(book.getContacts()); // Refresh contacts list
+						window.refreshContactsLabel(); // Update "Contacts" label
+					}
 				}
 			}
 		});
