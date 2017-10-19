@@ -53,6 +53,7 @@ public class Main {
 		}
 		// Create placeholder list of AddressBooks if it's empty
 		if(addressBooks.size() == 0)
+		{
 			for (int i=0; i<10; i++) {
 				AddressBook ab = new AddressBook();
 				ab.setName("Test address book #" + (i+1));
@@ -92,6 +93,9 @@ public class Main {
 					}
 				}
 			}
+			saveManifest();
+			saveContacts();
+		}
 		
 		// Change look & feel to that of the native OS
 		try {

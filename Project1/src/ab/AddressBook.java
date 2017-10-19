@@ -82,7 +82,7 @@ public class AddressBook {
 		}
 	}
 	
-	public void loadContacts(String fileName)
+	public boolean loadContacts(String fileName)
 	{
 		File file = new File(fileName);
 		try
@@ -110,6 +110,8 @@ public class AddressBook {
 		catch(IOException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 }
